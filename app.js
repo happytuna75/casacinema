@@ -3,29 +3,50 @@ var cheerio = require('cheerio')
 
 const casacinemaURL = 'https://www.casacinema.video'
 
-var casaCinemaDataFetcher = {
-  categories: [],
-  scraper: function (error, response, body) {
+var listOfCategories = null
+var filmsByCategory = {}
+
+var fetchListOfCategories = new Promise(function (resolve, reject) {
+  let categories = []
+  request.get(casacinemaURL, function (error, response, body) {
     if (error) {
       console.log('error:', error)
+      reject(error)
     } else if (!response) {
       console.log('error:' + ' no reponse received')
+      reject(Error('no reponse received'))
     } else if (response.statusCode !== 200) {
       console.log('statusCode: ' + response.statusCode + ' - response: ' + response)
+      reject(Error(response.statusCode + '  ' + response))
     } else {
       var $ = cheerio.load(body)
       $('div.container.home-cats ul li a').each(function (index, element) {
         let categoryLink = $(element).attr('href')
         categoryLink.startsWith('/') || (categoryLink = '/' + categoryLink)
-        this.categories.push({
+        categories.push({
           slug: $(element).text(),
           link: casacinemaURL + categoryLink
         })
-      }.bind(this))
-      console.log(JSON.stringify(this.categories))
+      })
+      resolve(categories)
     }
-  }
+  })
+})
+
+var categoriesPromise
+var getFilmsOfCategoryAtIndex = function (categoryIndex) {
+  categoriesPromise = categoriesPromise || fetchListOfCategories
+
+  return categoriesPromise.then(function (listOfCategories) {
+    if (categoryIndex < listOfCategories.length) {
+      // fetch films of category at index i
+      console.log('fetching films of category ' + categoryIndex + ': ' + listOfCategories[categoryIndex].slug)
+      getFilmsOfCategoryAtIndex(categoryIndex + 1)
+    }
+  }, function (error) {
+    console.log(error)
+    return []
+  })
 }
 
-console.log('fetching categories from: ' + casacinemaURL)
-request.get(casacinemaURL, casaCinemaDataFetcher.scraper.bind(casaCinemaDataFetcher))
+getFilmsOfCategoryAtIndex(0)
