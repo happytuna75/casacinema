@@ -1,6 +1,5 @@
 var request = require('request')
 var cheerio = require('cheerio')
-var mysql = require('mysql')
 
 const casacinemaURL = 'https://www.casacinema.video'
 
@@ -10,10 +9,9 @@ var casaCinemaDataFetcher = {
     if (error) {
       console.log('error:', error)
     } else if (!response) {
-      console.log('error:', 'no reponse received')
-    } else if (response.statusCode != 200) {
-      console.log('statusCode:', response.statusCode)
-      console.log('error:', response)
+      console.log('error:' + ' no reponse received')
+    } else if (response.statusCode !== 200) {
+      console.log('statusCode: ' + response.statusCode + ' - response: ' + response)
     } else {
       var $ = cheerio.load(body)
       $('div.container.home-cats ul li a').each(function (index, element) {
