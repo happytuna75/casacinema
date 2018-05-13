@@ -1,10 +1,9 @@
+'use strict'
+
 var request = require('request')
 var cheerio = require('cheerio')
 
 const casacinemaURL = 'https://www.casacinema.video'
-
-var listOfCategories = null
-var filmsByCategory = {}
 
 var fetchListOfCategories = new Promise(function (resolve, reject) {
   let categories = []
@@ -49,4 +48,8 @@ var getFilmsOfCategoryAtIndex = function (categoryIndex) {
   })
 }
 
-getFilmsOfCategoryAtIndex(0)
+var fetchFilms = function() {
+  getFilmsOfCategoryAtIndex(0)
+}
+
+fetchFilms()
