@@ -2,23 +2,23 @@
   "name": "casacinema",
   "version": "1.0.0",
   "description": "Casacinema data fetcher",
-  "main": "app.js",
+  "author": "Simone @KeSsoft",
+  "license": "ISC",
+  "main": "app.mjs",
   "repository": "git@github.com:happytuna/casacinema.git",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
-    "request": "^2.85.0"
+    "request": "^2.87.0"
   },
   "devDependencies": {
-    "eslint": "^5.0.0-alpha.2",
+    "eslint": "^5.0.0-alpha.3",
     "eslint-config-standard": "^12.0.0-alpha.0",
-    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "KeSsoft",
-  "license": "ISC"
+  }
 }
